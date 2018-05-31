@@ -1,0 +1,8 @@
+venv/
+.idea/
+.DS_Store
+dj/__pycache__/
+blogapp/__pycache__/
+galleryapp/__pycache__/
+blogapp/migrations/__pycache__/
+galleryapp/migrations/__pycache__/
