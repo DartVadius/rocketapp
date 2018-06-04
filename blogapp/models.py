@@ -13,6 +13,9 @@ class Profile(models.Model):
     message = models.CharField(max_length=255, blank=True)
     birth_date = models.DateField(null=True, blank=True)
 
+    def __str__(self):
+        return self.user.username
+
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
@@ -48,6 +51,12 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    def has_children(self):
+        count = Category.objects.filter(parent_id=self.id).count()
+        if count > 0:
+            return True
+        return False
+
 
 class Tag(models.Model):
     name = models.CharField(null=False, max_length=255, unique=True)
@@ -60,8 +69,8 @@ class Tag(models.Model):
 class Post (models.Model):
     title = models.CharField(max_length=255, blank=False)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
-    short_text = RichTextUploadingField('contents', blank=True)
-    text = RichTextUploadingField('contents', blank=False)
+    short_text = RichTextUploadingField('short description', blank=True)
+    text = RichTextUploadingField('full text', blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     meta_title = models.CharField(max_length=45, blank=True)
@@ -69,6 +78,11 @@ class Post (models.Model):
     meta_keywords = models.CharField(max_length=255, blank=True)
     category = models.ForeignKey(Category, on_delete=models.SET(None), null=True)
     tag = models.ManyToManyField(Tag, blank=True)
+
+    def display_tags(self):
+        return ', '.join([tag.name for tag in self.tag.all()])
+
+    display_tags.short_description = 'Tags'
 
     def save(self, *args, **kwargs):
         if self.slug == '':
