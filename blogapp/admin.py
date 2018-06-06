@@ -15,6 +15,16 @@ class PostAdmin(admin.ModelAdmin):
         }),
     )
 
+    class Media:
+        # Put your jquery in - automatically included by django but it appears below the chosen.jquery.min.js,
+        # adding it again just seems to shift it above
+        js = (
+              'js/jquery-3.3.1.min.js',
+              'chosen/chosen.jquery.min.js',
+              'chosen/chosen.proto.min.js',
+              'js/chosen_admin.js')
+        css = {'all': ('chosen/chosen.min.css', 'css/chosen_admin.css')}
+
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'created_at', 'parent_id')

@@ -126,7 +126,7 @@ jQuery(document).ready(function($) {
 		
 		$("<option />", {
 		 "value"   : el.attr("href"),
-		 "text"    :  sub + el.text()
+		 "text"    :  sub + el.html()
 		}).appendTo("#combo-holder select");
 	});
 

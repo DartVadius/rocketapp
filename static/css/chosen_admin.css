@@ -1,0 +1,10 @@
+
+select {
+    width: 200px;
+}
+.chosen-container-multi .chosen-results {
+	width: 100%;
+}
+.form-row  {
+    overflow: visible !important;
+}

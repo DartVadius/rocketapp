@@ -1,0 +1,125 @@
+{% extends "layout.html" %}
+{% load static %}
+{% block content %}
+
+    <!-- MAIN -->
+    <div role="main" id="main" class="cf">
+
+        <!-- posts list -->
+        <div id="posts-list" class="cf">
+            {% for post in posts %}
+                <article class="cf">
+                    <div class="entry-left-data">
+                        <div class="entry-date"><span class="m">{{ post.created_at|date:'b' }}</span><span class="d">{{ post.created_at|date:'d' }}</span></div>
+                        <a href="single.html#comments" class="comments">161</a>
+                    </div>
+
+                    <div class="entry-right-data">
+                        <a href="{% url 'blog_post' post_slug=post.slug %}" class="post-heading">{{ post.title }}</a>
+                        <div class="meta">
+                            <span class="user"><a href="#">By LuisZuno | </a></span>
+                            <span class="tags">
+                                {% for tag in post.tag.iterator %}
+                                    <a href="{% url 'blog_tag' tag_slug=tag.name %}">{{ tag.name }} </a>
+                                {% endfor %}
+                            </span>
+                        </div>
+                        <div class="excerpt">
+                            {% autoescape off %}
+                                {{ post.short_text }}
+                            {% endautoescape %}
+                        </div>
+                        <a href="{% url 'blog_post' post_slug=post.slug %}" class="link-button">Читать дальше</a>
+                    </div>
+                </article>
+            {% endfor %}
+
+            <!-- page-navigation -->
+
+            <div class=" page-navigation cf">
+                <span class="step-links">
+                    {% if posts.has_previous %}
+                        <div class="nav-next"><a href="?page={{ posts.previous_page_number }}">Тудой</a></div>
+                    {% else %}
+                        <div class="nav-next"><a href="#">Тудой</a></div>
+                    {% endif %}
+                    {% if posts.has_next %}
+                        <div class="nav-previous"><a href="?page={{ posts.next_page_number }}">Сюдой</a></div>
+                    {% else %}
+                        <div class="nav-previous"><a href="#">Сюдой</a></div>
+                    {% endif %}
+                </span>
+            </div>
+
+            <!--ENDS page-navigation -->
+
+
+        </div>
+        <!-- ENDS posts list -->
+
+        <!-- sidebar -->
+        <aside id="sidebar">
+
+            <ul>
+
+                <li class="block">
+                    <div class="sidebar-top"></div>
+                    <div class="sidebar-content">
+                        <h4 class="heading">Tags</h4>
+
+                        <div class="ads cf">
+                            {% for tag in tags %}
+                                <a href="{% url 'blog_tag' tag_slug=tag.name %}">{{ tag.name }} </a>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                    <div class="sidebar-bottom"></div>
+                </li>
+
+                <li class="block">
+                    <div class="sidebar-top"></div>
+                    <div class="sidebar-content">
+                        <h4 class="heading">Text Widget</h4>
+                        Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+                        Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero
+                        sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.
+                        Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
+                        commodo vitae, ornare sit amet, wisi.
+                    </div>
+                    <div class="sidebar-bottom"></div>
+                </li>
+
+                <li class="block">
+                    <div class="sidebar-top"></div>
+                    <div class="sidebar-content">
+                        <h4 class="heading">Categories</h4>
+                        <ul>
+                            <li class="cat-item"><a href="#" title="title">Film and video<span
+                                    class="post-counter"> (2)</span></a></li>
+                            <li class="cat-item"><a href="#" title="title">Print<span
+                                    class="post-counter"> (2)</span></a></li>
+                            <li class="cat-item"><a href="#" title="title">Photo and lomo<span
+                                    class="post-counter"> (2)</span></a></li>
+                            <li class="cat-item"><a href="#" title="title">Habitant morbi<span
+                                    class="post-counter"> (2)</span></a></li>
+                            <li class="cat-item"><a href="#" title="title">Film and video<span
+                                    class="post-counter"> (2)</span></a></li>
+                            <li class="cat-item"><a href="#" title="title">Print<span
+                                    class="post-counter"> (2)</span></a></li>
+                            <li class="cat-item"><a href="#" title="title">Photo and lomo<span
+                                    class="post-counter"> (2)</span></a></li>
+                            <li class="cat-item"><a href="#" title="title">Habitant morbi<span
+                                    class="post-counter"> (2)</span></a></li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-bottom"></div>
+                </li>
+            </ul>
+
+        </aside>
+        <!-- ENDS sidebar -->
+
+    </div>
+    <!-- ENDS MAIN -->
+{% endblock %}

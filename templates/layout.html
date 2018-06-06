@@ -8,7 +8,7 @@
 <head>
 	<meta charset="utf-8">
 		
-	<title>HalfTone Template</title>
+	<title>{{ Title|default:'HalfTone Template' }}</title>
 	<meta name="description" content="">
 	
 	<!-- Mobile viewport optimized: h5bp.com/viewport -->
@@ -36,14 +36,14 @@
 		<header class="cf">
 			
 			<div id="logo" class="cf">
-				<a href="index.html" ><img src="{% static 'img/logo.png' %}" alt="" /></a>
+				<a href="{% url 'blog_index' %}" ><img src="{% static 'img/logo.png' %}" alt="" /></a>
 			</div>
 			
 			<!-- nav -->
 			<nav class="cf">
 				<ul id="nav" class="sf-menu">
 					<li class="current-menu-item"><a href="{% url 'blog_index' %}"><span>HOME</span></a></li>
-					<li><a href="{% url 'blog_categories' %}"><span>BLOG</span></a>
+					<li><a href="{% url 'blog_posts' %}"><span>BLOG</span></a>
 						<ul>
                             {% for category in categories %}
                                 <li><a href="{% url 'blog_category' category_slug=category.slug %}">
@@ -88,8 +88,8 @@
 				<li class="first-col">
 					
 					<div class="widget-block">
-						<h4>RECENT POSTS</h4>
-                        {% for post in posts %}
+						<h4>Свежак</h4>
+                        {% for post in posts_footer %}
                             <div class="recent-post cf">
                                 <div class="post-head">
                                     <a href="#">{{ post.title }} </a><span> {{ post.created_at }}</span>
@@ -103,7 +103,7 @@
 				<li class="second-col">
 					
 					<div class="widget-block">
-						<h4>ABOUT</h4>
+						<h4>Контакты</h4>
 						<p>Vintage Template it's completely free this means you don't have to pay anything <a href="http://luiszuno.com/blog/license" >read license</a>.</p> 
 						
 						<p>Placeholder images by <a href="http://twistedfork.me/" >Dan Matutina</a></p>
@@ -115,7 +115,7 @@
 				<li class="third-col">
 					
 					<div class="widget-block">
-						<h4>DUMMY TEXT</h4>
+						<h4>Какой-то текст</h4>
 						<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. </p>
 		     		</div>
 		     		
@@ -124,14 +124,13 @@
 				<li class="fourth-col">
 
 					<div class="widget-block">
-						<h4>CATEGORIES</h4>
+						<h4>Категории</h4>
 						<ul>
-							<li class="cat-item"><a href="#" >Design</a></li>
-							<li class="cat-item"><a href="#" >Photo</a></li>
-							<li class="cat-item"><a href="#" >Art</a></li>
-							<li class="cat-item"><a href="#" >Game</a></li>
-							<li class="cat-item"><a href="#" >Film</a></li>
-							<li class="cat-item"><a href="#" >TV</a></li>
+                            {% for category in categories_footer %}
+                                <li>
+                                    <a href="{% url 'blog_category' category_slug=category.slug %}">{{ category.name }}</a>
+                                </li>
+                            {% endfor %}
 						</ul>
 					</div>
 
@@ -141,7 +140,7 @@
 
 			<!-- bottom -->
 			<div id="bottom">
-				<div id="widget-trigger-holder"><a id="widget-trigger" href="#" title="View More" class="poshytip"></a></div>
+				<div id="widget-trigger-holder"><a id="widget-trigger" href="#" title="More!" class="poshytip"></a></div>
 				<div id="content">HalfTone Theme by <a href="http://www.luiszuno.com" >luiszuno.com</a> </div>
 			</div>
 			<!-- ENDS bottom -->
