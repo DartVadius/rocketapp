@@ -1,8 +1,7 @@
 from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
-from blogapp.models import Post, Tag, Category, Profile
-from django.core import serializers
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.http import HttpResponse
+from blogapp.models import Post, Tag, Category
+from django.core.paginator import Paginator
 import re
 
 
@@ -29,11 +28,25 @@ def subcategory(request):
 
 
 def post(request, post_slug):
-    return HttpResponse(post_slug)
+    blog_post = Post.objects.filter(slug=post_slug).first()
+    return render(
+        request,
+        'blog_page.html',
+        context={'post': blog_post, 'Title': blog_post.title},
+    )
 
 
 def tag(request, tag_slug):
-    return HttpResponse(tag_slug)
+    blog_tag = Tag.objects.filter(name=tag_slug).first()
+    posts_list = Post.objects.order_by('-created_at').filter(tag=blog_tag).all()
+    paginator = Paginator(posts_list, 15)
+    page = request.GET.get('page')
+    blog_posts = paginator.get_page(page)
+    return render(
+        request,
+        'blog_posts.html',
+        context={'posts': blog_posts, 'Title': blog_tag.name},
+    )
 
 
 def posts(request):
@@ -49,4 +62,13 @@ def posts(request):
 
 
 def category(request, category_slug):
-    return HttpResponse(category_slug)
+    blog_category = Category.objects.filter(slug=category_slug).first()
+    posts_list = Post.objects.order_by('-created_at').filter(category=blog_category).all()
+    paginator = Paginator(posts_list, 15)
+    page = request.GET.get('page')
+    blog_posts = paginator.get_page(page)
+    return render(
+        request,
+        'blog_posts.html',
+        context={'posts': blog_posts, 'Title': blog_category.name},
+    )

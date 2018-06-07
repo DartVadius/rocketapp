@@ -2,55 +2,54 @@
 {% load static %}
 {% block content %}
     {% load comments static %}
+    {%  get_comment_count for post as comm_count %}
     <!-- MAIN -->
     <div role="main" id="main" class="cf">
 
         <!-- posts list -->
         <div id="posts-list" class="cf">
-            {% for post in posts %}
-                {%  get_comment_count for post as comm_count %}
-                <article class="cf">
-                    <div class="entry-left-data">
-                        <div class="entry-date"><span class="m">{{ post.created_at|date:'b' }}</span><span class="d">{{ post.created_at|date:'d' }}</span></div>
-                        <a href="{% url 'blog_post' post_slug=post.slug %}#comments" class="comments">{{ comm_count }}</a>
+
+            <article class="cf">
+                <div class="entry-left-data">
+                    <div class="entry-date"><span class="m">{{ post.created_at|date:'b' }}</span><span
+                            class="d">{{ post.created_at|date:'d' }}</span></div>
+                    <a href="{% url 'blog_post' post_slug=post.slug %}#comments" class="comments">{{ comm_count }}</a>
+                </div>
+
+                <div class="entry-right-data">
+                    <a href="#" class="post-heading">{{ post.title }}</a>
+                    <div class="meta">
+                        <span class="user"><a href="#">By LuisZuno | </a></span>
+                        {% for tag in post.tag.iterator %}
+                            <a href="{% url 'blog_tag' tag_slug=tag.name %}">{{ tag.name }} </a>
+                        {% endfor %}
+                    </div>
+                    <div class="excerpt">
+                        {% autoescape off %}
+                            {{ post.text }}
+                        {% endautoescape %}
                     </div>
 
-                    <div class="entry-right-data">
-                        <a href="{% url 'blog_post' post_slug=post.slug %}" class="post-heading">{{ post.title }}</a>
-                        <div class="meta">
-                            <span class="user"><a href="#">By LuisZuno | </a></span>
-                            <span class="tags">
-                                {% for tag in post.tag.iterator %}
-                                    <a href="{% url 'blog_tag' tag_slug=tag.name %}">{{ tag.name }} </a>
-                                {% endfor %}
-                            </span>
-                        </div>
-                        <div class="excerpt">
-                            {% autoescape off %}
-                                {{ post.short_text }}
-                            {% endautoescape %}
-                        </div>
-                        <a href="{% url 'blog_post' post_slug=post.slug %}" class="link-button">Читать дальше</a>
-                    </div>
-                </article>
-            {% endfor %}
+                </div>
+            </article>
 
-            <!-- page-navigation -->
-            <div class=" page-navigation cf">
-                <span class="step-links">
-                    {% if posts.has_previous %}
-                        <div class="nav-next"><a href="?page={{ posts.previous_page_number }}">Тудой</a></div>
-                    {% else %}
-                        <div class="nav-next"><a href="#">Тудой</a></div>
-                    {% endif %}
-                    {% if posts.has_next %}
-                        <div class="nav-previous"><a href="?page={{ posts.next_page_number }}">Сюдой</a></div>
-                    {% else %}
-                        <div class="nav-previous"><a href="#">Сюдой</a></div>
-                    {% endif %}
-                </span>
+
+            <!-- Comments wrap-->
+            <div id="comments-wrap">
+
+                <h4 class="heading" id="comments">{{ comm_count }} комментария</h4>
+
+                <!-- comments list -->
+                <ul class="commentlist">
+
+
+                    {% render_comment_list for post %}
+                    {% render_comment_form for post %}
+
+                </ul>
+                <!-- ENDS comments list -->
             </div>
-            <!--ENDS page-navigation -->
+            <!-- ENDS Comments wrap -->
 
 
         </div>
@@ -70,7 +69,6 @@
                             {% for tag in tags %}
                                 <a href="{% url 'blog_tag' tag_slug=tag.name %}">{{ tag.name }} </a>
                             {% endfor %}
-
                         </div>
                     </div>
                     <div class="sidebar-bottom"></div>

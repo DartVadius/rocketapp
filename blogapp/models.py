@@ -56,6 +56,9 @@ class Category(models.Model):
         if count > 0:
             return True
         return False
+    #
+    # def post_count(self):
+    #     return Post.objects.filter(category=self).count()
 
 
 class Tag(models.Model):

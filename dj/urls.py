@@ -23,6 +23,6 @@ urlpatterns = [
     path('', include('blogapp.urls')),
     path('gallery/', include('galleryapp.urls')),
     path('admin/', admin.site.urls),
-    url(r'post/<str:post_slug>', include('django_comments.urls')),
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
+    url(r'^post/', include('fluent_comments.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

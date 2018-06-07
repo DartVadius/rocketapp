@@ -41,12 +41,21 @@ INSTALLED_APPS = [
     'galleryapp.apps.GalleryappConfig',
     'ckeditor',
     'ckeditor_uploader',
-    'threadedcomments',
+    'fluent_comments',  # must be before django_comments
+    'crispy_forms',
     'django_comments',
     'django.contrib.sites',
+    'threadedcomments',
 ]
 
-COMMENTS_APP = 'threadedcomments'
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+FLUENT_COMMENTS_REPLACE_ADMIN = True
+
+COMMENTS_APP = 'fluent_comments'
+
+FLUENT_COMMENTS_EXCLUDE_FIELDS = ('email', 'url')
+FLUENT_COMMENTS_USE_EMAIL_NOTIFICATION = False
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -115,6 +124,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
+
 LANGUAGE_CODE = 'ru-Ru'
 
 TIME_ZONE = 'UTC'
@@ -150,6 +160,9 @@ CKEDITOR_UPLOAD_PATH = "uploads/"
 
 CKEDITOR_CONFIGS = {
     'default': {
-        # 'toolbar': 'full',
+        'toolbar': 'full',
+        'removePlugins': 'forms',
+        'toolbar_fool': ['codeSnippet'],
+        'extraPlugins': 'codesnippet',
     },
 }

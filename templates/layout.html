@@ -9,8 +9,10 @@
 	<meta charset="utf-8">
 		
 	<title>{{ Title|default:'HalfTone Template' }}</title>
-	<meta name="description" content="">
-	
+    <meta name="description" content="Free Web tutorials">
+    <meta name="keywords" content="HTML,CSS,XML,JavaScript">
+    <meta name="author" content="DartVadius">
+
 	<!-- Mobile viewport optimized: h5bp.com/viewport -->
 	<meta name="viewport" content="width=device-width">
 
@@ -20,7 +22,12 @@
     <link rel="stylesheet" href="{% static '/css/tweet.css' %}" media="all"  />
 	<link rel="stylesheet" href="{% static '/css/style.css' %}">
     <link rel="stylesheet" href="{% static '/css/lessframework.css' %}" media="all"  />
-	
+    <link rel="stylesheet" type="text/css" href="{% static 'fluent_comments/css/ajaxcomments.css' %}"/>
+	<link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
 	
 	<!-- All JavaScript at the bottom, except this Modernizr build.
 	   Modernizr enables HTML5 elements & feature detects for optimal performance.
@@ -28,7 +35,7 @@
 	<script src="{% static '/js/modernizr-2.5.3.min.js' %}"></script>
 </head>
 <body>
-
+ {% load i18n %}
 	<!-- WRAPPER -->
 	<div class="wrapper cf">
 	
@@ -42,8 +49,8 @@
 			<!-- nav -->
 			<nav class="cf">
 				<ul id="nav" class="sf-menu">
-					<li class="current-menu-item"><a href="{% url 'blog_index' %}"><span>HOME</span></a></li>
-					<li><a href="{% url 'blog_posts' %}"><span>BLOG</span></a>
+					<li class="current-menu-item"><a href="{% url 'blog_index' %}"><span>ГЛАВНАЯ</span></a></li>
+					<li><a href="{% url 'blog_posts' %}"><span>БЛОГ</span></a>
 						<ul>
                             {% for category in categories %}
                                 <li><a href="{% url 'blog_category' category_slug=category.slug %}">
@@ -56,8 +63,8 @@
                             {% endfor %}
 						</ul>
 					</li>
-					<li><a href="portfolio.html"><span>WORK</span></a></li>
-					<li><a href="contact.html"><span>CONTACT</span></a></li>
+					<li><a href="portfolio.html"><span>ФОТО</span></a></li>
+					<li><a href="contact.html"><span>КОНТАКТЫ</span></a></li>
 				</ul>
 				<div id="combo-holder"></div>
 			</nav>
@@ -111,14 +118,14 @@
 					</div>
 					
 				</li>
-				
+
 				<li class="third-col">
-					
+
 					<div class="widget-block">
 						<h4>Какой-то текст</h4>
 						<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. </p>
 		     		</div>
-		     		
+
 				</li>
 
 				<li class="fourth-col">
@@ -128,7 +135,7 @@
 						<ul>
                             {% for category in categories_footer %}
                                 <li>
-                                    <a href="{% url 'blog_category' category_slug=category.slug %}">{{ category.name }}</a>
+                                    <a href="{% url 'blog_category' category_slug=category.slug %}">{{ category.name }} <span>({{ category.post_set.count }})</span></a>
                                 </li>
                             {% endfor %}
 						</ul>
@@ -157,6 +164,7 @@
 	<!-- scripts concatenated and minified via build script -->
 	<script src="{% static 'js/jquery-1.7.1.min.js' %}"></script>
 	<script src="{% static 'js/custom.js' %}"></script>
+    <script type="text/javascript" src="{% static 'fluent_comments/js/ajaxcomments.js' %}"></script>
 	
 	<!-- superfish -->
 	<script  src="{%  static 'js/superfish-1.4.8/js/hoverIntent.js' %}"></script>
