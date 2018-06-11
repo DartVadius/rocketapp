@@ -5,7 +5,7 @@ from django.dispatch import receiver
 from django.template.defaultfilters import slugify
 from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
-import time
+import time, re
 
 
 class Profile(models.Model):
@@ -32,6 +32,9 @@ class Category(models.Model):
     name = models.CharField(max_length=255, unique=True, blank=False)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    meta_title = models.CharField(max_length=45, blank=True)
+    meta_description = models.CharField(max_length=255, blank=True)
+    meta_keywords = models.CharField(max_length=255, blank=True)
     parent_id = models.ForeignKey('self', default=None, null=True, on_delete=models.SET(None), blank=True)
 
     def save(self, *args, **kwargs):
@@ -100,6 +103,12 @@ class Post (models.Model):
         if count > 0:
             return False
         return True
+
+    def get_title_picture(self):
+        if re.search('(<img .* />)', self.short_text):
+            return re.search('(<img .* />)', self.short_text).group(1)
+        else:
+            return '<img alt="" src="/static/img/dummies/t1.jpg" />'
 
     def __str__(self):
         return self.title

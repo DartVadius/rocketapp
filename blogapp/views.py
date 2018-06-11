@@ -1,22 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from blogapp.models import Post, Tag, Category
 from django.core.paginator import Paginator
-import re
 
 
 def index(request):
     blog_posts = Post.objects.order_by('-created_at').all()[:3]
-    images = dict()
-    for blog_post in blog_posts:
-        if re.search('(<img .* />)', blog_post.short_text):
-            images[blog_post.id] = re.search('(<img .* />)', blog_post.short_text).group(1)
-        else:
-            images[blog_post.id] = '<img alt="" src="/static/img/dummies/t1.jpg" />'
     return render(
         request,
         'blog_index.html',
-        context={'posts': blog_posts, 'images': images},
+        context={'posts': blog_posts},
     )
 
 
@@ -28,16 +21,23 @@ def subcategory(request):
 
 
 def post(request, post_slug):
-    blog_post = Post.objects.filter(slug=post_slug).first()
+    # blog_post = Post.objects.filter(slug=post_slug).first()
+    blog_post = get_object_or_404(Post, slug=post_slug)
     return render(
         request,
         'blog_page.html',
-        context={'post': blog_post, 'Title': blog_post.title},
+        context={
+            'post': blog_post,
+            'Title': blog_post.meta_title,
+            'description': blog_post.meta_description,
+            'keywords': blog_post.meta_keywords
+        },
     )
 
 
 def tag(request, tag_slug):
-    blog_tag = Tag.objects.filter(name=tag_slug).first()
+    # blog_tag = Tag.objects.filter(name=tag_slug).first()
+    blog_tag = get_object_or_404(Tag, name=tag_slug)
     posts_list = Post.objects.order_by('-created_at').filter(tag=blog_tag).all()
     paginator = Paginator(posts_list, 15)
     page = request.GET.get('page')
@@ -45,7 +45,12 @@ def tag(request, tag_slug):
     return render(
         request,
         'blog_posts.html',
-        context={'posts': blog_posts, 'Title': blog_tag.name},
+        context={
+            'posts': blog_posts,
+            'Title': blog_tag.name,
+            'description': blog_tag.name,
+            'keywords': blog_tag.name
+        },
     )
 
 
@@ -57,12 +62,18 @@ def posts(request):
     return render(
         request,
         'blog_posts.html',
-        context={'posts': blog_posts, 'Title': 'Все посты'},
+        context={
+            'posts': blog_posts,
+            'Title': 'Все посты',
+            'description': 'всякая всячина и программирование',
+            'keywords':  'php, python, django, yii2, laravel, flask'
+        },
     )
 
 
 def category(request, category_slug):
-    blog_category = Category.objects.filter(slug=category_slug).first()
+    # blog_category = Category.objects.filter(slug=category_slug).first()
+    blog_category = get_object_or_404(Category, slug=category_slug)
     posts_list = Post.objects.order_by('-created_at').filter(category=blog_category).all()
     paginator = Paginator(posts_list, 15)
     page = request.GET.get('page')
@@ -70,5 +81,10 @@ def category(request, category_slug):
     return render(
         request,
         'blog_posts.html',
-        context={'posts': blog_posts, 'Title': blog_category.name},
+        context={
+            'posts': blog_posts,
+            'Title': blog_category.meta_title,
+            'description': blog_category.meta_description,
+            'keywords': blog_category.meta_keywords,
+        },
     )

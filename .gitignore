@@ -1,5 +1,6 @@
 venv/
 .idea/
+media/
 .DS_Store
 dj/__pycache__/
 blogapp/__pycache__/
