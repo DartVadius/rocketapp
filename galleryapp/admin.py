@@ -1,9 +1,8 @@
 from django.contrib import admin
+from dj.service.services import Files
+
 from .models import Gallery, Photo
 from .forms import GalleryForm, PhotoForm
-from django.core.files.storage import FileSystemStorage
-import time
-from PIL import Image, ImageFilter
 
 
 class GalleryAdmin(admin.ModelAdmin):
@@ -34,28 +33,14 @@ class GalleryAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
         if request.FILES.getlist('files'):
-            for file in request.FILES.getlist('files'):
-                fs = FileSystemStorage()
-                filename = fs.save(str(obj.id) + '/' + str(round(time.time())) + '_' + file.name, file)
-                splited = filename.split('/')
-                splited[-1] = 'thumb_' + splited[-1]
-                thumb_path = '/'.join(splited)
-                uploaded_file_url = fs.url(filename)
-                img = Photo()
-                img.gallery_id = obj.id
-                img.path = uploaded_file_url
-                img.save()
-                img = Image.open('media/' + filename)
-                size = (280, 280)
-                img.thumbnail(size)
-                img.save('media/' + thumb_path)
+            Files.images_to_gallery_upload(obj, request.FILES.getlist('files'))
 
 
 class PhotoAdmin(admin.ModelAdmin):
 
     form = PhotoForm
 
-    list_display = ('gallery', 'display_img',)
+    list_display = ('display_img', 'title', 'gallery',)
     readonly_fields = ('display_img',)
     list_filter = ('gallery',)
 

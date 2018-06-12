@@ -4,6 +4,7 @@ media/
 staticfiles/
 .DS_Store
 dj/__pycache__/
+dj/service/__pycache__/
 blogapp/__pycache__/
 galleryapp/__pycache__/
 blogapp/migrations/__pycache__/
