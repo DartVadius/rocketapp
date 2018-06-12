@@ -2,7 +2,9 @@
 {% load i18n admin_urls %}
 {% block after_related_objects %}
     {% for image in original.photo_set.all %}
-        <img src="{{ image.get_thumb|safe }}" style="width: 150px"><a href="#">X</a>
+        <img src="{{ image.get_thumb|safe }}" style="width: 150px; margin-right: -30px; margin-bottom: -5px;">
+        <a href="{% url 'delete_photo' photo_id=image.id %}">
+        <i class="fas fa-minus-square fa-2x" style="color: #ff650a"></i>
+        </a>&nbsp
     {% endfor %}
-    <h1>hello1</h1>
 {% endblock %}

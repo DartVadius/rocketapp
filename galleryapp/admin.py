@@ -9,6 +9,7 @@ from PIL import Image, ImageFilter
 class GalleryAdmin(admin.ModelAdmin):
     form = GalleryForm
 
+    # change original admin template
     change_form_template = 'change_form.html'
 
     list_display = ('name', 'created_at',)
@@ -32,7 +33,7 @@ class GalleryAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
-        if request.FILES['files']:
+        if request.FILES.getlist('files'):
             for file in request.FILES.getlist('files'):
                 fs = FileSystemStorage()
                 filename = fs.save(str(obj.id) + '/' + str(round(time.time())) + '_' + file.name, file)

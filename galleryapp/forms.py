@@ -5,7 +5,7 @@ from galleryapp.models import Gallery, Photo
 
 
 class GalleryForm(forms.ModelForm):
-    files = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=True, label='Photos')
+    files = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False, label='Photos')
 
     class Meta:
         model = Gallery

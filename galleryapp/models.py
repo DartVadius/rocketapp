@@ -1,4 +1,4 @@
-import time
+import time, os
 
 from django.db import models
 from ckeditor.fields import RichTextField
@@ -34,11 +34,26 @@ class Gallery(models.Model):
 
 class Photo(models.Model):
     path = models.CharField(max_length=255, unique=False, blank=False)
+    title = models.CharField(max_length=255, unique=False, blank=True)
+    alt = models.CharField(max_length=255, unique=False, blank=True)
     description = RichTextField(blank=True)
     gallery = models.ForeignKey(Gallery, on_delete=models.CASCADE, null=False)
 
     def __str__(self):
-        return self.path
+        if self.title:
+            return self.title
+        return 'photo'
+
+    def delete(self, using=None, keep_parents=False):
+        base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        path = base + self.path
+        if os.path.isfile(path):
+            os.remove(path)
+        thumb_path = self.get_thumb()
+        path = base + thumb_path
+        if os.path.isfile(path):
+            os.remove(path)
+        super(Photo, self).delete(using, keep_parents)
 
     def get_thumb(self):
         splited = self.path.split('/')
