@@ -8,20 +8,30 @@ from .forms import GalleryForm, PhotoForm
 class GalleryAdmin(admin.ModelAdmin):
     form = GalleryForm
 
-    # change original admin template
-    change_form_template = 'change_form.html'
+    # override original admin template
+    # change_form_template = 'admin_change_form.html'
 
     list_display = ('name', 'created_at',)
     list_filter = ('created_at',)
 
     fieldsets = (
         (None, {
-            'fields': ('name', 'files',)
+            'fields': ('name', 'files', 'tag')
         }),
         ('Meta data', {
             'fields': ('meta_title', 'meta_description', 'meta_keywords',)
         }),
     )
+
+    class Media:
+        # Put your jquery in - automatically included by django but it appears below the chosen.jquery.min.js,
+        # adding it again just seems to shift it above
+        js = (
+              'js/jquery-3.3.1.min.js',
+              'chosen/chosen.jquery.min.js',
+              'chosen/chosen.proto.min.js',
+              'js/chosen_admin.js')
+        css = {'all': ('chosen/chosen.min.css', 'css/chosen_admin.css')}
 
     def change_view(self, request, object_id, form_url='', extra_context=None):
         extra_context = extra_context or {}

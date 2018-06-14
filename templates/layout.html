@@ -41,7 +41,6 @@
 	
 	
 		<header class="cf">
-			
 			<div id="logo" class="cf">
 				<a href="{% url 'blog_index' %}" ><img src="{% static 'img/logo.png' %}" alt="" /></a>
 			</div>
@@ -63,8 +62,8 @@
                             {% endfor %}
 						</ul>
 					</li>
-					<li><a href="portfolio.html"><span>ФОТО</span></a></li>
-					<li><a href="contact.html"><span>КОНТАКТЫ</span></a></li>
+					<li><a href="{% url 'gallery_index' %}"><span>ФОТО</span></a></li>
+					<li><a href="{% url 'blog_contact' %}"><span>КОНТАКТЫ</span></a></li>
 				</ul>
 				<div id="combo-holder"></div>
 			</nav>
@@ -171,12 +170,14 @@
 	<script  src="{% static 'js/superfish-1.4.8/js/superfish.js' %}"></script>
 	<script  src="{% static 'js/superfish-1.4.8/js/supersubs.js' %}"></script>
 	<!-- ENDS superfish -->
-	
+
+    <script  src="{% static 'js/my.js' %}"></script>
 	<script src="{% static 'js/jquery.nivo.slider.js' %}" ></script>
+    <script src="{% static 'js/form-validation.js' %}" ></script>
 	<script src="{% static 'js/css3-mediaqueries.js' %}"></script>
 	<script src="{% static 'js/tabs.js' %}"></script>
 	<script  src="{% static 'js/poshytip-1.1/src/jquery.poshytip.min.js' %}"></script>
-    <script  src="{% static 'js/my.js' %}"></script>
+    <script  src="{% static 'js/js.cookie.js' %}"></script>
 	<!-- end scripts -->
 
 </body>

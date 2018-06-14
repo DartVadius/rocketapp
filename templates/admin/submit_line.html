@@ -1,11 +1,22 @@
 {% load i18n admin_urls %}
 <div class="submit-row">
-{% if show_save %}<input type="submit" value="{% trans 'Save' %}" class="default" name="_save" />{% endif %}
-{% if show_delete_link %}
-    {% url opts|admin_urlname:'delete' original.pk|admin_urlquote as delete_url %}
-    <p class="deletelink-box"><a href="{% add_preserved_filters delete_url %}" class="deletelink">{% trans "Delete" %}</a></p>
-{% endif %}
-{% if show_save_as_new %}<input type="submit" value="{% trans 'Save as new' %}" name="_saveasnew" />{% endif %}
-{% if show_save_and_add_another %}<input type="submit" value="{% trans 'Save and add another' %}" name="_addanother" />{% endif %}
-{% if show_save_and_continue %}<input type="submit" value="{% trans 'Save and continue editing' %}" name="_continue" />{% endif %}
+    {% if show_save %}<input type="submit" value="{% trans 'Save' %}" class="default" name="_save"/>{% endif %}
+    {% if show_delete_link %}
+        {% url opts|admin_urlname:'delete' original.pk|admin_urlquote as delete_url %}
+        <p class="deletelink-box"><a href="{% add_preserved_filters delete_url %}"
+                                     class="deletelink">{% trans "Delete" %}</a></p>
+    {% endif %}
+    {% if show_save_as_new %}<input type="submit" value="{% trans 'Save as new' %}" name="_saveasnew"/>{% endif %}
+    {% if show_save_and_add_another %}
+        <input type="submit" value="{% trans 'Save and add another' %}" name="_addanother"/>{% endif %}
+    {% if show_save_and_continue %}
+        <input type="submit" value="{% trans 'Save and continue editing' %}" name="_continue"/>{% endif %}
+</div>
+<div>
+    {% for image in original.photo_set.all %}
+        <img src="{{ image.get_thumb|safe }}" style="width: 150px; margin-right: -30px; margin-bottom: -5px;">
+        <a href="{% url 'delete_photo' photo_id=image.id %}">
+            <i class="fas fa-minus-square fa-2x" style="color: #ff650a; background: whitesmoke"></i>
+        </a>&nbsp
+    {% endfor %}
 </div>

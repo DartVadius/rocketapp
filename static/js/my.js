@@ -11,6 +11,5 @@ $(document).ready(function ($) {
                 elem.closest('li').append(responce);
             }
         });
-        console.log(parent_id);
     });
 });

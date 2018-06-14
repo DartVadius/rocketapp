@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+{% load static %}
+{% block content %}
+    <!-- MAIN -->
+    <div role="main" id="main" class="cf">
+
+        <div id="project-title">
+            LOREM IPSUM DOLOR AMET
+        </div>
+
+        <div id="project-gallery">
+            {% for photo in gallery.photo_set.iterator %}
+                <div class="thumb"><img src="{{ photo.path }}" alt="Thumbnail"/></div>
+            {% endfor %}
+        </div>
+
+        <div id="project-info">
+            {{ gallery.name }}
+
+            <div id="project-sheet">
+                <p><strong>Tags</strong><br/>
+                    {% for tag in gallery.tag.iterator %}
+                        <a href="{% url 'gallery_tag' gallery_tag=tag.name %}">{{ tag.name }}</a>
+                    {% endfor %}
+                </p>
+                <p><strong>Date</strong><br/>{{ gallery.created_at }}</p>
+            </div>
+        </div>
+        <!-- related -->
+        <div class="cf"></div>
+        <div class="related-projects">
+            <h2 class="related-heading">Related projects</h2>
+            <ul class="related-list cf">
+                {% for item in gallery.get_related_galleries %}
+                    <li>
+                        {% with item.get_random_image as img %}
+                            <a href="{% url 'gallery_page' gallery_slug=item.slug %}" class="thumb">
+                                <img src="{{ img.get_thumb }}" alt="{{ img.alt }}"/>
+                            </a>
+                        {% endwith %}
+                        <a href="{% url 'gallery_page' gallery_slug=item.slug %}" class="heading">{{ item.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <!-- ENDS related -->
+
+    </div>
+    <!-- ENDS MAIN -->
+{% endblock %}

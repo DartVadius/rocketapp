@@ -1,5 +1,12 @@
 {% extends "admin/base.html" %}
 {% load static %}
+{% block title %}{{ title }} | {{ _('Rocketapp admin') }}{% endblock %}
+
+{% block branding %}
+    <h1 id="site-name"><a href="{% url 'admin:index' %}">{{ _('Rocketapp administration') }}</a></h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
 {% block extrastyle %}
-    <link href="{% static 'css/fontawesome-all.css' %}"  rel="stylesheet">
+    <link href="{% static 'css/fontawesome-all.css' %}" rel="stylesheet">
 {% endblock %}

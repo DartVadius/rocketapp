@@ -1,7 +1,7 @@
 from django.core.files.storage import FileSystemStorage
 from galleryapp.models import Photo
 import time
-from PIL import Image
+from PIL import Image, ImageOps
 
 
 class Files:
@@ -20,6 +20,7 @@ class Files:
             img.path = uploaded_file_url
             img.save()
             img = Image.open('media/' + filename)
-            size = (280, 280)
-            img.thumbnail(size)
-            img.save('media/' + thumb_path)
+            size = (300, 360)
+            thumb = ImageOps.fit(img, size, Image.ANTIALIAS)
+            # img.thumbnail(size)
+            thumb.save('media/' + thumb_path)

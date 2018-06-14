@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Profile, Tag, Category
+from .models import Post, Profile, Tag, Category, Contact
 
 
 class PostAdmin(admin.ModelAdmin):
@@ -38,8 +38,13 @@ class ProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'birth_date')
 
 
+class ContactAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'message', 'created_at')
+
+
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Post, PostAdmin)
+admin.site.register(Contact, ContactAdmin)
 

@@ -166,3 +166,6 @@ CKEDITOR_CONFIGS = {
         'extraPlugins': 'codesnippet',
     },
 }
+
+APP_NAME = 'Rocketapp'
+ADMIN_EMAIL = 'test@test.com'

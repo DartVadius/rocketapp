@@ -8,11 +8,13 @@
         <!-- posts list -->
         <div id="posts-list" class="cf">
             {% for post in posts %}
-                {%  get_comment_count for post as comm_count %}
+                {% get_comment_count for post as comm_count %}
                 <article class="cf">
                     <div class="entry-left-data">
-                        <div class="entry-date"><span class="m">{{ post.created_at|date:'b' }}</span><span class="d">{{ post.created_at|date:'d' }}</span></div>
-                        <a href="{% url 'blog_post' post_slug=post.slug %}#comments" class="comments">{{ comm_count }}</a>
+                        <div class="entry-date"><span class="m">{{ post.created_at|date:'b' }}</span><span
+                                class="d">{{ post.created_at|date:'d' }}</span></div>
+                        <a href="{% url 'blog_post' post_slug=post.slug %}#comments"
+                           class="comments">{{ comm_count }}</a>
                     </div>
 
                     <div class="entry-right-data">
@@ -37,18 +39,20 @@
 
             <!-- page-navigation -->
             <div class=" page-navigation cf">
-                <span class="step-links">
+                {% if posts.has_previous or posts.has_next %}
+                    <span class="step-links">
                     {% if posts.has_previous %}
                         <div class="nav-next"><a href="?page={{ posts.previous_page_number }}">Тудой</a></div>
                     {% else %}
                         <div class="nav-next"><a href="#">Тудой</a></div>
                     {% endif %}
-                    {% if posts.has_next %}
-                        <div class="nav-previous"><a href="?page={{ posts.next_page_number }}">Сюдой</a></div>
-                    {% else %}
-                        <div class="nav-previous"><a href="#">Сюдой</a></div>
-                    {% endif %}
+                        {% if posts.has_next %}
+                            <div class="nav-previous"><a href="?page={{ posts.next_page_number }}">Сюдой</a></div>
+                        {% else %}
+                            <div class="nav-previous"><a href="#">Сюдой</a></div>
+                        {% endif %}
                 </span>
+                {% endif %}
             </div>
             <!--ENDS page-navigation -->
 

@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+{% load static %}
+{% block content %}
+    <!-- MAIN -->
+    <div role="main" id="main" class="cf">
+
+        <!-- categories -->
+        <ul class="nav-categories cf">
+            {% for tag in tags %}
+                <li><a href="{% url 'gallery_tag' gallery_tag=tag.name %}">{{ tag.name }}</a></li>
+            {% endfor %}
+        </ul>
+        <!-- ENDS categories -->
+
+        <!-- featured -->
+        <ul class="work-list cf">
+            {% for gallery in galleries %}
+                <li>
+                    <a href="{% url 'gallery_page' gallery_slug=gallery.slug %}" class="thumb">
+                        <img src="{{ gallery.get_random_image.get_thumb }}" alt="Thumbnail"/>
+                        <div class="img-overlay"><i class="icon-plus-sign"></i></div>
+                    </a>
+                    <a href="{% url 'gallery_page' gallery_slug=gallery.slug %}" class="excerpt">{{ gallery.name }}</a>
+                    <div class="categories">
+                        {% for tag in gallery.tag.iterator %}
+                            <a href="{% url 'gallery_tag' gallery_tag=tag.name %}">{{ tag.name }}</a>
+                        {% endfor %}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        <!-- ENDS featured -->
+        <!-- page-navigation -->
+        <div class=" page-navigation cf">
+            {% if galleries.has_previous or galleries.has_next %}
+                <span class="step-links">
+                    {% if galleries.has_previous %}
+                        <div class="nav-next"><a href="?page={{ galleries.previous_page_number }}">Тудой</a></div>
+                    {% else %}
+                        <div class="nav-next"><a href="#">Тудой</a></div>
+                    {% endif %}
+                    {% if galleries.has_next %}
+                        <div class="nav-previous"><a href="?page={{ galleries.next_page_number }}">Сюдой</a></div>
+                    {% else %}
+                        <div class="nav-previous"><a href="#">Сюдой</a></div>
+                    {% endif %}
+                    </span>
+            {% endif %}
+        </div>
+        <!--ENDS page-navigation -->
+
+    </div>
+    <!-- ENDS MAIN -->
+{% endblock %}

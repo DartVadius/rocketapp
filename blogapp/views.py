@@ -1,15 +1,19 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
-from blogapp.models import Post, Tag, Category
+from blogapp.models import Post, Tag, Category, User, Contact
 from django.core.paginator import Paginator
-
+from dj.settings import ADMIN_EMAIL, APP_NAME
+from blogapp.forms import ContactForm
 
 def index(request):
     blog_posts = Post.objects.order_by('-created_at').all()[:3]
     return render(
         request,
         'blog_index.html',
-        context={'posts': blog_posts},
+        context={
+            'posts': blog_posts,
+            'Title': APP_NAME,
+        },
     )
 
 
@@ -28,7 +32,7 @@ def post(request, post_slug):
         'blog_page.html',
         context={
             'post': blog_post,
-            'Title': blog_post.meta_title,
+            'Title': APP_NAME + ' | ' + blog_post.meta_title,
             'description': blog_post.meta_description,
             'keywords': blog_post.meta_keywords
         },
@@ -47,7 +51,7 @@ def tag(request, tag_slug):
         'blog_posts.html',
         context={
             'posts': blog_posts,
-            'Title': blog_tag.name,
+            'Title': APP_NAME + ' | ' + blog_tag.name,
             'description': blog_tag.name,
             'keywords': blog_tag.name
         },
@@ -64,7 +68,7 @@ def posts(request):
         'blog_posts.html',
         context={
             'posts': blog_posts,
-            'Title': 'Все посты',
+            'Title': APP_NAME + ' | Все посты',
             'description': 'всякая всячина и программирование',
             'keywords':  'php, python, django, yii2, laravel, flask'
         },
@@ -83,8 +87,31 @@ def category(request, category_slug):
         'blog_posts.html',
         context={
             'posts': blog_posts,
-            'Title': blog_category.meta_title,
+            'Title': APP_NAME + ' | ' + blog_category.meta_title,
             'description': blog_category.meta_description,
             'keywords': blog_category.meta_keywords,
         },
     )
+
+
+def contact(request):
+    form = ContactForm()
+    return render(
+        request,
+        'blog_contact.html',
+        context={
+            'form': form,
+            'Title': APP_NAME + ' | contacts',
+            'description': '',
+            'keywords': '',
+        },
+    )
+
+
+def send_mail(request):
+    if request.is_ajax():
+        model = Contact()
+        model.model_populate(request)
+        model.save()
+        return HttpResponse(True)
+    return HttpResponse(False)

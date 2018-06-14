@@ -1,9 +1,11 @@
-import time, os
-
+import time
+import os
 from django.db import models
 from ckeditor.fields import RichTextField
+from django.db.models import Count
 from django.template.defaultfilters import slugify
 from django.utils.safestring import mark_safe
+from blogapp.models import Tag
 
 
 class Gallery(models.Model):
@@ -13,6 +15,7 @@ class Gallery(models.Model):
     meta_title = models.CharField(max_length=45, blank=True)
     meta_description = models.CharField(max_length=255, blank=True)
     meta_keywords = models.CharField(max_length=255, blank=True)
+    tag = models.ManyToManyField(Tag, blank=True)
 
     def save(self, *args, **kwargs):
         if self.slug == '':
@@ -27,6 +30,17 @@ class Gallery(models.Model):
         if count > 0:
             return False
         return True
+
+    def get_random_image(self):
+        """Return random image"""
+        return self.photo_set.order_by('?').first()
+
+    def get_related_galleries(self, num=3):
+        """
+        Return list of gallery objects with same tags in random order
+        num is a quantity of receiving rows
+        """
+        return Gallery.objects.filter(~models.Q(id=self.id), tag__in=self.tag.all()).order_by('?').all()[:num]
 
     def __str__(self):
         return self.name
@@ -56,12 +70,13 @@ class Photo(models.Model):
         super(Photo, self).delete(using, keep_parents)
 
     def get_thumb(self):
+        """Return thumbnail path"""
         splited = self.path.split('/')
         splited[-1] = 'thumb_' + splited[-1]
         thumb_path = '/'.join(splited)
         return thumb_path
 
     def display_img(self):
-        return mark_safe('<img src="%s" />' % self.get_thumb())
+        return mark_safe('<img src="%s" height="120px" />' % self.get_thumb())
 
     display_img.short_description = 'Image'

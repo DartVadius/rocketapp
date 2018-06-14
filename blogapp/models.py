@@ -113,11 +113,17 @@ class Post (models.Model):
     def __str__(self):
         return self.title
 
-#
-# class Comment(models.Model):
-#     text = models.TextField(null=False)
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     post = models.OneToOneField(Post, on_delete=models.CASCADE)
-#     parent_id = models.ForeignKey('self', default=None, null=True)
 
+class Contact(models.Model):
+    name = models.CharField(max_length=255, blank=False)
+    email = models.EmailField()
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
+    def model_populate(self, request):
+        self.name = request.POST.get('name')
+        self.email = request.POST.get('email')
+        self.message = request.POST.get('comment')
+
+    def __str__(self):
+        return self.name
