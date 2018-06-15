@@ -13,3 +13,4 @@ urlpatterns = [
     path('contact/', views.contact, name='blog_contact'),
     path('send-mail/', views.send_mail, name='send_mail'),
 ]
+

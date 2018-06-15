@@ -18,11 +18,15 @@ from django.urls import path, include
 from django.conf.urls import url
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic import TemplateView
 
 urlpatterns = [
-    path('', include('blogapp.urls')),
-    path('gallery/', include('galleryapp.urls')),
+    # path('', include('blogapp.urls')),
+    # path('gallery/', include('galleryapp.urls')),
     path('admin/', admin.site.urls),
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
     url(r'^post/', include('fluent_comments.urls')),
+    url(r'^api/v1/', include('blogapp.api_urls')),
+    url(r'^api/v1/', include('galleryapp.api_urls')),
+    path('', TemplateView.as_view(template_name='layout.html')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
